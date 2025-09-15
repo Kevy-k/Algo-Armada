@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preload" href="background.jpg" as="image">
+    <link rel="preload" href="background.jpg" as="image" />
     <title>Enter 4-Digit Code</title>
     <style>
       body {
-        background-image: url('background.jpg');
+        background-image: url("background.jpg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -15,7 +15,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 90vh;
+        height: 100vh; /* Changed to 100vh for full height */
+        margin: 0;
         font-family: Arial, sans-serif;
         color: white;
       }
@@ -53,6 +54,71 @@
       .pin-input:focus {
         border-color: #11ad09;
       }
+
+      /* --- STYLES FOR CUSTOM ALERT --- */
+      .custom-alert-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .custom-alert-overlay.visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .custom-alert-box {
+        background: #161b22;
+        padding: 30px 40px;
+        border: 2px solid #ff0000;
+        border-radius: 15px;
+        box-shadow: 0 0 20px #ff0000;
+        text-align: center;
+        color: #ddd;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+      }
+
+      .custom-alert-overlay.visible .custom-alert-box {
+        transform: scale(1);
+      }
+
+      .custom-alert-box h2 {
+        color: #ff0000;
+        margin-top: 0;
+        font-size: 1.8rem;
+      }
+
+      .custom-alert-box p {
+        font-size: 1.1rem;
+        margin-bottom: 25px;
+      }
+
+      #customAlertBtn {
+        background-color: #ff0000;
+        color: white;
+        border: none;
+        padding: 10px 30px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      #customAlertBtn:hover {
+        background-color: #c40000;
+      }
     </style>
   </head>
   <body>
@@ -73,9 +139,21 @@
       </div>
     </div>
 
+    <div class="custom-alert-overlay" id="customAlert">
+      <div class="custom-alert-box">
+        <h2>Wrong Code!</h2>
+        <p>The seal remains intact. Try again.</p>
+        <button id="customAlertBtn">Retry</button>
+      </div>
+    </div>
+
     <script>
       const inputs = document.querySelectorAll(".pin-input");
       const correct_code = "8514";
+      // --- Get references to custom alert elements ---
+      const customAlert = document.getElementById("customAlert");
+      const customAlertBtn = document.getElementById("customAlertBtn");
+
       inputs.forEach((input, index) => {
         input.addEventListener("input", () => {
           if (input.value.length === 1 && index < inputs.length - 1) {
@@ -86,9 +164,8 @@
             if (enteredCode === correct_code) {
               window.location.replace("clue.html");
             } else {
-              alert("RETRY");
-              inputs.forEach((inp) => (inp.value = ""));
-              inputs[0].focus();
+              // --- Show the custom alert instead of the default one ---
+              customAlert.classList.add("visible");
             }
           }
         });
@@ -98,6 +175,15 @@
             inputs[index - 1].focus();
           }
         });
+      });
+
+      // --- Add event listener for the custom alert's button ---
+      customAlertBtn.addEventListener("click", () => {
+        // Hide the alert
+        customAlert.classList.remove("visible");
+        // Reset the input fields and focus on the first one
+        inputs.forEach((inp) => (inp.value = ""));
+        inputs[0].focus();
       });
     </script>
   </body>
