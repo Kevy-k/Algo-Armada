@@ -3,92 +3,185 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Success!</title>
+    <title>Pirate's Treasure Unlocked!</title>
     <style>
       body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        /* CHANGED: Use 100vh for full viewport height */
         height: 100vh;
-        /* ADDED: Remove default browser margin */
         margin: 0;
-        background-image: url("wallpaper.jpg");
-        /* CHANGED: 'contain' to 'cover' to fill the screen */
-        background-size: cover;
+        background-image: url("wallpaper3.jpg");
         background-position: center;
-        background-repeat: no-repeat;
-        /* ADDED: Keeps the background fixed during scroll on mobile */
-        background-attachment: fixed;
-        font-family: Arial, sans-serif;
-        color: #00ffcc;
-        text-align: center;
-        /* ADDED: Add some padding to the body for small screens */
-        padding: 15px;
-        box-sizing: border-box;
+        background-size: cover; /* Dark background for contrast */
+        font-family: "Courier New", Courier, monospace; /* Monospace font for typewriter effect */
+        overflow: hidden; /* Prevent scrollbars */
+        position: relative;
       }
 
-      .success-box {
-        padding: 40px;
-        border: 2px solid #00ffcc;
-        border-radius: 15px;
-        background: #161b22;
-        box-shadow: 0 0 20px #00ffcc;
-        animation: fadeIn 1s ease-in-out;
-        /* ADDED: Control the size of the box */
-        width: 90%; /* Responsive width */
-        max-width: 600px; /* Maximum width on larger screens */
-        box-sizing: border-box; /* Ensures padding is included in the width */
+      /* Styles for the pirate image */
+      .pirate-speaker {
+        position: absolute;
+        bottom: 0;
+        left: 15%;
+        transform: translateX(-50%);
+        height: 70vh; /* Responsive height */
+        max-height: 700px; /* Max height on large screens */
+        object-fit: contain;
+        object-position: center bottom;
+        animation: slideInUp 1.5s ease-out forwards; /* Entry animation */
       }
 
-      h1 {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
+     /* Styles for the dialogue box */
+     /* Styles for the dialogue box */
+      .dialogue-box {
+        position: absolute;
+        top: 28%;
+        left: 42%; /* Pushed to the right to make room for the tail on the left */
+        transform: translateX(-50%);
+        background: rgba(22, 27, 34, 0.9);
+        border: 2px solid #000000;
+        border-radius: 20px;
+        box-shadow: 0 0 25px #000000;
+        padding: 25px 35px;
+        max-width: 500px;
+        width: 85%;
+        text-shadow: 0 0 8px #00000099;
+        opacity: 0;
+        animation: fadeIn 1s ease-in-out forwards 1s;
+        position: relative;
       }
 
-      p {
+      /* Styles for the speech bubble tail */
+      .dialogue-box::after {
+        content: '';
+        position: absolute;
+        top: 50%; /* Center vertically */
+        left: -20px; /* Position outside the left edge of the box */
+        transform: translateY(-50%); /* Adjust for vertical centering */
+        width: 0;
+        height: 0;
+        /* Create a triangle pointing left */
+        border-top: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-right: 20px solid rgba(22, 27, 34, 0.9); /* Tail color matches background */
+        z-index: 1;
+      }
+
+      /* Styles for the tail's border */
+      .dialogue-box::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: -24px; /* Position slightly further left for the border effect */
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        /* Create a slightly larger triangle for the border */
+        border-top: 22px solid transparent;
+        border-bottom: 22px solid transparent;
+        border-right: 24px solid #000000; /* Tail border color matches box border */
+        z-index: 0;
+      }
+
+      .dialogue-box h1,
+      .dialogue-box p {
+        margin: 0;
+        padding: 0;
+        color: #ffffff;
+        border-right: 0.15em solid #000000;
+        white-space: pre-wrap;
+        overflow: hidden;
+      }
+
+      .dialogue-box h1 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        line-height: 1.2;
+        color: #ac0404;
+      }
+      
+      .dialogue-box p {
         font-size: 1.2rem;
-        color: #ddd;
+        line-height: 1.6;
+      }
+      
+      .typing {
+         animation: blink-caret 0.75s step-end infinite;
+      }
+      
+      @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: #000000; }
       }
 
+      @keyframes slideInUp {
+        from { transform: translate(-50%, 100%); }
+        to { transform: translate(-50%, 0); }
+      }
+      
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: scale(0.9);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
+        to { opacity: 1; }
       }
 
-      /* ADDED: Media Query for mobile devices */
-      /* This block applies styles only if the screen width is 768px or less */
+      /* Media Queries for mobile devices */
       @media (max-width: 768px) {
-        .success-box {
-          /* Reduce padding on smaller screens */
-          padding: 25px;
-        }
-
-        h1 {
-          /* Reduce font size for the heading */
-          font-size: 2rem;
-        }
-
-        p {
-          /* Reduce font size for the paragraph */
-          font-size: 1rem;
-        }
+        .pirate-speaker { height: 60vh; }
+        .dialogue-box { top: 5%; width: 90%; padding: 20px; }
+        .dialogue-box h1 { font-size: 1.5rem; }
+        .dialogue-box p { font-size: 1rem; }
+      }
+      /* Media Queries for mobile devices */
+      @media (max-width: 768px) {
+        .pirate-speaker { height: 60vh; }
+        .dialogue-box { top: 5%; width: 90%; padding: 20px; }
+        .dialogue-box h1 { font-size: 1.5rem; }
+        .dialogue-box p { font-size: 1rem; }
       }
     </style>
   </head>
   <body>
-    <div class="success-box">
-      <h1>🏴‍☠️Aye! The code be true.</h1>
-      <p>
-        Ye’ve unlocked the ultimate_unlock() — the final treasure awaits in
-        Room 310!<br />
-      </p>
+    <img src="pirate2.png" alt="Pirate Skeleton" class="pirate-speaker" />
+
+    <div class="dialogue-box">
+      <h1 id="dialogue-h1"></h1>
+      <p id="dialogue-p"></p>
     </div>
+
+    <script>
+      // This function types out text into a given element
+      function typeWriter(element, text, speed) {
+        return new Promise((resolve) => {
+          let i = 0;
+          element.classList.add('typing'); // Add blinking cursor
+          
+          function type() {
+            if (i < text.length) {
+              element.innerHTML += text.charAt(i);
+              i++;
+              setTimeout(type, speed);
+            } else {
+              element.classList.remove('typing'); // Remove cursor when done
+              element.style.borderRight = 'none'; // Permanently remove border
+              resolve(); // Signal that this part is finished
+            }
+          }
+          type();
+        });
+      }
+
+      // This function runs when the page is fully loaded
+      window.onload = function () {
+        const h1 = document.getElementById("dialogue-h1");
+        const p = document.getElementById("dialogue-p");
+
+        const h1Text = "Aye! The code be true.";
+        const pText = "Ye’ve unlocked the ultimate_unlock()                  The final treasure awaits in Room 310!";
+
+        // We wait 1.5 seconds for the pirate/box animations to settle
+        setTimeout(() => {
+          // Start typing the H1. Once it's done (.then), start typing the P.
+          typeWriter(h1, h1Text, 100)
+            .then(() => typeWriter(p, pText, 40));
+        }, 1500);
+      };
+    </script>
   </body>
 </html>
